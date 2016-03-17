@@ -33,7 +33,7 @@ namespace :puma do
   task stop: :environment do
     queue! %[
       if [ -e '#{pumactl_socket}' ]; then
-        cd #{deploy_to}/#{current_path} && #{pumactl_cmd} -S #{puma_state} stop
+        cd #{deploy_to}/#{current_path} && #{pumactl_cmd} -F /root/rails/shared/config/puma.rb -S #{puma_state} stop
         rm -f '#{pumactl_socket}'
       else
         echo 'Puma is not running!';
@@ -51,7 +51,7 @@ namespace :puma do
   task phased_restart: :environment do
     queue! %[
       if [ -e '#{pumactl_socket}' ]; then
-        cd #{deploy_to}/#{current_path} && #{pumactl_cmd} -S #{puma_state} --pidfile #{puma_pid} phased-restart
+        cd #{deploy_to}/#{current_path} && #{pumactl_cmd} -F /root/rails/shared/config/puma.rb -S #{puma_state} --pidfile #{puma_pid} phased-restart
       else
         echo 'Puma is not running!';
       fi
